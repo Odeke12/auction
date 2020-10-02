@@ -1,0 +1,70 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% for item in items %}
+    {% if a_user != item.user %}
+    <!-- <form method="post" action="{% url 'watchlist' item.id %}">  -->
+    
+<a href="{% url 'watchlist' item.id %}" class="btn btn-secondary btn-sm" >WatchList</a>
+    <!-- </form> -->
+    {% endif %}
+
+
+    <h2>Listing: {{ item.title }}</h2>
+    <p>{{ item.description }}</p>
+    <h2>${{ item.starting_bid }}</h2>
+    <form method="post" action="{% url 'bid' item.id %}">
+    {% csrf_token %}
+    {% if a_user != item.user %}
+    <p>The current bid is {{ current_bid }}.</p>
+    {% if item.available == True %}
+    <input type="number" placeholder="Bid" name="bid">
+    {% else %}
+    <p></p>
+    {% endif %}
+    <br>
+    <br/>
+    {% else %}
+    <p>Current Bid : {{ current_bid }}</p>
+    {% endif %}
+    {% if a_user != item.user %}
+    {% if item.available == True %}
+    <button type="submit" class="btn btn-primary btn-sm">Place bid</button>
+    {% else %}
+    <p>This item is not available.</p>
+    {% endif %}
+    {% else %}
+       {% if current_bid != 'No current bids' %}
+        <a href="{% url 'remove' item.id %}"><button type="button" class="btn btn-danger">Cancel bid</button></a>
+        {% endif %}
+    {% endif %}
+    </form>
+    <h3>Details</h3>
+    <ul>
+        <li>Listed by: {{ item.user }}</li>
+        <li>Category: {{ item.category }}</li>
+    </ul>
+
+    <form method="post" action="{% url 'comment' item.id %}">
+     {% csrf_token %}
+   <label for="exampleFormControlTextarea1">Enter your comment below.</label>
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="the_comment"></textarea>
+    <button type="submit" class="btn btn-primary btn-sm">Comment</button>
+    </form>
+    {% endfor %}
+ {% for comment in comments %}
+    <div class="card">
+  <div class="card-header">
+      Comment by : {{ comment.author }}
+  </div>
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <p>{{ comment.the_comment }}</p>
+    </blockquote>
+  </div>
+</div>
+{% endfor %}
+
+    
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <form method="post" action="{% url 'create' %}">
+       {% csrf_token %}
+        <input name="title" placeholder="Title" class="form-control" id="formGroupExampleInput"  type="text">
+        <br>
+        <textarea name="a_description" class="form-control" id="exampleFormControlTextarea1" rows="3">
+            Enter your description here
+        </textarea>
+        <br>
+        <input name="category" placeholder="Category" type="text" class="form-control" id="formGroupExampleInput">
+        <br>
+        <input name="bid" type="number" class="form-control" id="formGroupExampleInput" placeholder="Enter your bid">
+        <br>
+        <input type="submit">
+    </form>
+{% endblock %}

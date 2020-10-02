@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    {% for listing in listings %}
+    {% if listing.available %}
+       <p>{{ message }}</p>
+        <a href="{% url 'item' listing.id %}"><h4>{{ listing.title }}</h4></a>
+        Price : {{ listing.starting_bid }}
+        <br>
+        <small>Created on {{ listing.date_created|date:"F d, Y" }}</small>
+        <br>
+    {% endif %}
+    {% endfor %}
+
+{% endblock %}
